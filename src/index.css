@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-primary text-white;
+}
+
+.secondary-bg {
+  @apply bg-secondary;
+}
