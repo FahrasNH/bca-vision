@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MainLayout from "../../components/layout/MainLayout";
 import { useMovies } from "../../hooks/useMovies";
 import Skeleton from "../../components/atoms/Skeleton";
@@ -15,12 +15,21 @@ const MovieSkeleton = () => (
 );
 
 const ExploreMovie = () => {
+  // Hooks
   const { managementMovies, handleGettingListMovies } = useMovies();
-  const { loading, movies } = managementMovies;
+  const observerRef = useRef(null);
+  const loadingRef = useRef(false);
+
+  // State
   const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+
+  // Variables
+  const { loading, movies, totalPages } = managementMovies;
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
+      setPage(1);
       handleGettingListMovies({
         page: 1,
         search: searchQuery,
@@ -29,6 +38,46 @@ const ExploreMovie = () => {
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchQuery]);
+
+  useEffect(() => {
+    if (page > 1) {
+      handleGettingListMovies({
+        page,
+        search: searchQuery,
+      });
+    }
+  }, [page]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          !loading &&
+          !loadingRef.current &&
+          page < totalPages
+        ) {
+          loadingRef.current = true;
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [loading, page, totalPages]);
+
+  useEffect(() => {
+    loadingRef.current = false;
+  }, [movies]);
 
   return (
     <MainLayout>
@@ -51,21 +100,15 @@ const ExploreMovie = () => {
           </div>
 
           <div className="bg-secondary p-[14px] rounded-full cursor-not-allowed">
-            <Bell
-              className="text-white"
-              size={20}
-              weight="bold"
-              color="#FFFFFF"
-            />
+            <Bell size={20} weight="bold" color="#FFFFFF" />
           </div>
 
           <div className="flex items-center bg-secondary rounded-full p-1 cursor-not-allowed">
             <img
-              src="src/assets/images/ava.jpg"
+              src="src/assets/images/kill_av.jpg"
               alt="avatar"
               className="w-10 h-10 rounded-full"
             />
-
             <div className="flex flex-col justify-start ml-2 mr-3">
               <span className="text-white text-sm font-medium">Fahras</span>
               <span className="text-gray-400 text-xs">Author</span>
@@ -90,7 +133,11 @@ const ExploreMovie = () => {
                 className="relative bg-secondary rounded-3xl shadow-md overflow-hidden group"
               >
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                      : "src/assets/images/default_poster.jpg"
+                  }
                   alt={movie.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
@@ -105,6 +152,18 @@ const ExploreMovie = () => {
           )}
         </div>
       </div>
+
+      <div className="flex justify-center py-4">
+        {loading && (
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-secondary rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="w-2 h-2 bg-secondary rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="w-2 h-2 bg-secondary rounded-full animate-bounce"></div>
+          </div>
+        )}
+      </div>
+
+      <div ref={observerRef} className="h-4" />
     </MainLayout>
   );
 };

@@ -23,13 +23,17 @@ export interface MovieParams {
   search: string;
 }
 
+export interface MovieStates {
+  movies: Movie[];
+  totalPages: number;
+  loading: boolean;
+  error: string | null;
+}
+
 export const useMovies = () => {
-  const [managementMovies, setManagementMovies] = useState<{
-    movies: Movie[];
-    loading: boolean;
-    error: string | null;
-  }>({
+  const [managementMovies, setManagementMovies] = useState<MovieStates>({
     movies: [],
+    totalPages: 0,
     loading: true,
     error: null,
   });
@@ -37,23 +41,47 @@ export const useMovies = () => {
   const handleGettingListMovies = (params: MovieParams) => {
     const { search, page } = params;
 
-    const endpoint = search ? "search" : "discover";
-    const url = `${API_URL}/${endpoint}/movie?page=${page}${
-      search ? `&query=${search}` : ""
-    }`;
+    setManagementMovies(prev => ({
+      ...prev,
+      loading: true
+    }));
+
+    const url = search
+      ? `${API_URL}/search/movie?page=${page}&query=${search}`
+      : `${API_URL}/discover/movie?page=${page}`;
 
     fetch(url, fetchOptions)
       .then((res) => res.json())
       .then((data) => {
-        setManagementMovies({
-          movies: data.results,
-          loading: false,
-          error: null,
+        setManagementMovies((prevMovie) => {
+          if (page === 1) {
+            return {
+              movies: data.results,
+              totalPages: data.total_pages,
+              loading: false,
+              error: null,
+            };
+          }
+
+          const existingMovieIds = new Set(
+            prevMovie.movies.map((movie) => movie.id)
+          );
+          const newMovies = data.results.filter(
+            (movie: Movie) => !existingMovieIds.has(movie.id)
+          );
+
+          return {
+            movies: [...prevMovie.movies, ...newMovies],
+            totalPages: data.total_pages,
+            loading: false,
+            error: null,
+          };
         });
       })
       .catch((error) => {
         setManagementMovies({
           movies: [],
+          totalPages: 0,
           loading: false,
           error: error.message,
         });
