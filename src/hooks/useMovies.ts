@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { API_URL, fetchOptions } from "../config/api";
+import api from "../config/api";
 
 export interface Movie {
   adult: boolean;
@@ -39,60 +39,62 @@ export const useMovies = () => {
     error: null,
   });
 
-  const handleGettingListMovies = (params: MovieParams) => {
+  const handleGettingListMovies = async (params: MovieParams) => {
     const { search, page, category } = params;
 
-    setManagementMovies((prev) => ({
-      ...prev,
-      loading: true,
-    }));
+    setManagementMovies((prev) => {
+      return {
+        ...prev,
+        loading: true,
+      };
+    });
 
-    let url = `${API_URL}/`;
+    let url = "";
 
     if (search) {
-      url += `search/movie?query=${search}&page=${page}`;
+      url = `search/movie?query=${search}&page=${page}`;
     } else if (category?.trim()) {
-      url += `movie/${category}?page=${page}`;
+      url = `movie/${category}?page=${page}`;
     } else {
-      url += `discover/movie?page=${page}`;
+      url = `discover/movie?page=${page}`;
     }
 
-    fetch(url, fetchOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        setManagementMovies((prevMovie) => {
-          if (page === 1) {
-            return {
-              movies: data.results,
-              totalPages: data.total_pages,
-              loading: false,
-              error: null,
-            };
-          }
+    try {
+      const response = await api.get(url);
+      const { results, total_pages } = response.data;
 
-          const existingMovieIds = new Set(
-            prevMovie.movies.map((movie) => movie.id)
-          );
-          const newMovies = data.results.filter(
-            (movie: Movie) => !existingMovieIds.has(movie.id)
-          );
+      setManagementMovies((prevMovie) => {
+        const newState =
+          page === 1
+            ? {
+                movies: results,
+                totalPages: total_pages,
+                loading: false,
+                error: null,
+              }
+            : {
+                movies: [
+                  ...prevMovie.movies,
+                  ...results.filter(
+                    (movie: Movie) =>
+                      !new Set(prevMovie.movies.map((m) => m.id)).has(movie.id)
+                  ),
+                ],
+                totalPages: total_pages,
+                loading: false,
+                error: null,
+              };
 
-          return {
-            movies: [...prevMovie.movies, ...newMovies],
-            totalPages: data.total_pages,
-            loading: false,
-            error: null,
-          };
-        });
-      })
-      .catch((error) => {
-        setManagementMovies({
-          movies: [],
-          totalPages: 0,
-          loading: false,
-          error: error.message,
-        });
+        return newState;
       });
+    } catch (error) {
+      setManagementMovies({
+        movies: [],
+        totalPages: 0,
+        loading: false,
+        error: error instanceof Error ? error.message : "An error occurred",
+      });
+    }
   };
 
   return { managementMovies, handleGettingListMovies };

@@ -20,8 +20,7 @@ const MovieSkeleton = () => (
 const ExploreMovie = () => {
   // Hooks
   const { managementMovies, handleGettingListMovies } = useMovies();
-  const navigate = useNavigate()
-  const isInitialRender = useRef(true);
+  const navigate = useNavigate();
   const observerRef = useRef(null);
   const loadingRef = useRef(false);
 
@@ -34,13 +33,6 @@ const ExploreMovie = () => {
   const { loading, movies, totalPages } = managementMovies;
 
   useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-
-    setPage(1);
-
     handleGettingListMovies({
       page: 1,
       search: searchQuery,
@@ -171,7 +163,7 @@ const ExploreMovie = () => {
             </>
           ) : (
             (movies || []).map((movie) => (
-              <div
+              <button
                 key={movie.id}
                 className="relative bg-secondary rounded-3xl shadow-md overflow-hidden group cursor-pointer"
                 onClick={() => navigate(`/explore/${movie.id}`)}
@@ -191,7 +183,7 @@ const ExploreMovie = () => {
                   </h2>
                   <p className="text-gray-300">{movie.release_date}</p>
                 </div>
-              </div>
+              </button>
             ))
           )}
         </div>
