@@ -1,21 +1,6 @@
 import { useState } from "react";
 import api from "../config/api";
-
-interface MovieDetail {
-  title: string;
-  overview: string;
-  release_date: string;
-  poster_path: string;
-  vote_average: number;
-  genres: { id: number; name: string }[];
-  backdrop_path: string;
-}
-
-interface MovieDetailState {
-  movie: MovieDetail | null;
-  loading: boolean;
-  error: string | null;
-}
+import { MovieDetailState } from "../types/movieTypes";
 
 export const useMovieDetail = () => {
   const [managementMovieDetail, setManagementMovieDetail] =

@@ -5,6 +5,7 @@ import { categoryOptions } from "../../config/staticConst";
 import MainLayout from "../../components/layout/MainLayout";
 import Select from "../../components/atoms/Select";
 import Skeleton from "../../components/atoms/Skeleton";
+import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
 const MovieSkeleton = () => (
@@ -177,11 +178,13 @@ const ExploreMovie = () => {
                   alt={movie.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-primary via-secondary/80 to-transparent h-1/4 transition-[height,background] ease-in-out duration-300 group-hover:h-2/4 group-hover:via-black/90 flex flex-col justify-end">
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-primary via-secondary/80 to-transparent h-1/4 transition-[height,background] ease-in-out duration-300 group-hover:h-2/4 group-hover:via-black/90 flex flex-col justify-end text-left">
                   <h2 className="text-lg font-semibold text-white">
                     {movie.title}
                   </h2>
-                  <p className="text-gray-300">{movie.release_date}</p>
+                  <p className="text-gray-300">
+                    {moment(movie.release_date).format("DD MMM YYYY")}
+                  </p>
                 </div>
               </button>
             ))

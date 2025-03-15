@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes } from "react";
+import { SelectHTMLAttributes, useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 
 interface Option {
@@ -10,26 +10,41 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   options: Option[];
 }
 
-const Select = ({ options, className = "", ...props }: SelectProps) => {
+const Select = ({ options, className = "", value, onChange }: SelectProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedOption = options.find((opt) => opt.value === value);
+
   return (
     <div className="relative">
-      <select
-        className={`px-6 py-3 bg-secondary text-white rounded-full outline-none focus:ring-2 focus:ring-primary/50 pr-10 appearance-none cursor-pointer ${className}`}
-        {...props}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`flex items-center justify-between px-6 py-3 bg-secondary text-white rounded-full outline-none focus:ring-2 focus:ring-primary/50 min-w-[150px] ${className}`}
       >
-        {(options || []).map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        <span>{selectedOption?.label ?? "Select option"}</span>
+        <CaretDown
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+          size={16}
+          weight="bold"
+          color="#FFFFFF"
+        />
+      </button>
 
-      <CaretDown
-        className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
-        size={16}
-        weight="bold"
-        color="#FFFFFF"
-      />
+      {isOpen && (
+        <div className="absolute z-50 w-full mt-2 bg-secondary rounded-xl overflow-hidden shadow-lg">
+          {options.map((option) => (
+            <button
+              key={option.value}
+              className="w-full px-6 py-3 text-left text-white hover:bg-primary/20 transition-colors"
+              onClick={() => {
+                onChange?.({ target: { value: option.value } } as any);
+                setIsOpen(false);
+              }}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
