@@ -13,7 +13,7 @@ const NavLink = ({ to, icon, label }: NavLinkProps) => {
   return (
     <Link
       to={to}
-      className={`flex items-center py-3 rounded-lg hover:bg-primary transition-colors ${
+      className={`flex items-center py-3 rounded-lg px-2 hover:bg-primary/40 transition-colors ${
         isActive ? "text-[#80D5CB]" : "text-[#c8ccdd]"
       }`}
     >

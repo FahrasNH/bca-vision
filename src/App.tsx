@@ -6,13 +6,15 @@ import {
 } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-const ExploreMovie = lazy(() => import("./components/pages/ExploreMovie"));
+const ExploreMovie = lazy(() => import("./pages/Explore"));
+const HomePage = lazy(() => import("./pages/Home"));
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        <Route path="/" element={<ExploreMovie />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/explore" element={<ExploreMovie />} />
       </Route>
     )
   );
