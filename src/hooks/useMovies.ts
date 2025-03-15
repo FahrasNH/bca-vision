@@ -18,6 +18,11 @@ export interface Movie {
   vote_count: number;
 }
 
+export interface MovieParams {
+  page: number;
+  search: string;
+}
+
 export const useMovies = () => {
   const [managementMovies, setManagementMovies] = useState<{
     movies: Movie[];
@@ -29,8 +34,13 @@ export const useMovies = () => {
     error: null,
   });
 
-  const handleGettingListMovies = () => {
-    const url = `${API_URL}/discover/movie?page=1`;
+  const handleGettingListMovies = (params: MovieParams) => {
+    const { search, page } = params;
+
+    const endpoint = search ? "search" : "discover";
+    const url = `${API_URL}/${endpoint}/movie?page=${page}${
+      search ? `&query=${search}` : ""
+    }`;
 
     fetch(url, fetchOptions)
       .then((res) => res.json())
