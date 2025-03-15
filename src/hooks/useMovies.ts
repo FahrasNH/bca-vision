@@ -20,7 +20,8 @@ export interface Movie {
 
 export interface MovieParams {
   page: number;
-  search: string;
+  search?: string;
+  category?: string;
 }
 
 export interface MovieStates {
@@ -39,16 +40,22 @@ export const useMovies = () => {
   });
 
   const handleGettingListMovies = (params: MovieParams) => {
-    const { search, page } = params;
+    const { search, page, category } = params;
 
-    setManagementMovies(prev => ({
+    setManagementMovies((prev) => ({
       ...prev,
-      loading: true
+      loading: true,
     }));
 
-    const url = search
-      ? `${API_URL}/search/movie?page=${page}&query=${search}`
-      : `${API_URL}/discover/movie?page=${page}`;
+    let url = `${API_URL}/`;
+
+    if (search) {
+      url += `search/movie?query=${search}&page=${page}`;
+    } else if (category?.trim()) {
+      url += `movie/${category}?page=${page}`;
+    } else {
+      url += `discover/movie?page=${page}`;
+    }
 
     fetch(url, fetchOptions)
       .then((res) => res.json())

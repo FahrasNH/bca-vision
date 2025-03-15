@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import MainLayout from "../../components/layout/MainLayout";
 import { useMovies } from "../../hooks/useMovies";
-import Skeleton from "../../components/atoms/Skeleton";
 import { Bell, MagnifyingGlass } from "@phosphor-icons/react";
+import { categoryOptions } from "../../config/staticConst";
+import MainLayout from "../../components/layout/MainLayout";
+import Select from "../../components/atoms/Select";
+import Skeleton from "../../components/atoms/Skeleton";
 
 const MovieSkeleton = () => (
   <div className="relative bg-primary rounded-3xl shadow-md overflow-hidden">
@@ -17,34 +19,67 @@ const MovieSkeleton = () => (
 const ExploreMovie = () => {
   // Hooks
   const { managementMovies, handleGettingListMovies } = useMovies();
+  const isInitialRender = useRef(true);
   const observerRef = useRef(null);
   const loadingRef = useRef(false);
 
   // State
   const [searchQuery, setSearchQuery] = useState("");
+  const [category, setCategory] = useState("");
   const [page, setPage] = useState(1);
 
   // Variables
   const { loading, movies, totalPages } = managementMovies;
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      setPage(1);
-      handleGettingListMovies({
-        page: 1,
-        search: searchQuery,
-      });
-    }, 500);
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
+    setPage(1);
+
+    handleGettingListMovies({
+      page: 1,
+      search: searchQuery,
+      category,
+    });
+  }, []);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setPage(1);
+
+    handleGettingListMovies({
+      page: 1,
+      search: e.target.value,
+      category,
+    });
+  };
+
+  const handleChangeCategory = (evt: React.ChangeEvent<HTMLSelectElement>) => {
+    const newCategory = evt.target.value;
+    setCategory(newCategory);
+    setPage(1);
+
+    handleGettingListMovies({
+      page: 1,
+      search: searchQuery,
+      category: newCategory,
+    });
+  };
 
   useEffect(() => {
     if (page > 1) {
-      handleGettingListMovies({
-        page,
-        search: searchQuery,
-      });
+      const delayDebounceFn = setTimeout(() => {
+        handleGettingListMovies({
+          page,
+          search: searchQuery,
+          category,
+        });
+      }, 500);
+
+      return () => clearTimeout(delayDebounceFn);
     }
   }, [page]);
 
@@ -81,14 +116,20 @@ const ExploreMovie = () => {
 
   return (
     <MainLayout>
-      <div className="p-4 mt-8">
+      <div className="px-4 pb-4 mt-8">
         <div className="flex justify-between items-center mb-6 space-x-3">
+          <Select
+            options={categoryOptions}
+            value={category}
+            onChange={handleChangeCategory}
+          />
+
           <div className="relative flex-1">
             <input
               type="text"
               placeholder="Search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearch}
               className="w-full px-6 py-3 bg-secondary text-white rounded-full outline-none focus:ring-2 focus:ring-primary/50 pr-12"
             />
             <MagnifyingGlass
@@ -120,17 +161,17 @@ const ExploreMovie = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {loading ? (
             <>
-              {[...Array(8)].map((_) => (
+              {[...Array(12)].map((_) => (
                 <MovieSkeleton
                   key={`skeleton-${Math.random().toString().slice(2, 11)}`}
                 />
               ))}
             </>
           ) : (
-            movies.map((movie) => (
+            (movies || []).map((movie) => (
               <div
                 key={movie.id}
-                className="relative bg-secondary rounded-3xl shadow-md overflow-hidden group"
+                className="relative bg-secondary rounded-3xl shadow-md overflow-hidden group cursor-pointer"
               >
                 <img
                   src={
@@ -141,7 +182,7 @@ const ExploreMovie = () => {
                   alt={movie.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-primary via-secondary/80 to-transparent h-1/4 transition-[height,background] ease-in-out duration-300 group-hover:h-2/4 group-hover:via-black/90 flex flex-col justify-end cursor-pointer">
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-primary via-secondary/80 to-transparent h-1/4 transition-[height,background] ease-in-out duration-300 group-hover:h-2/4 group-hover:via-black/90 flex flex-col justify-end">
                   <h2 className="text-lg font-semibold text-white">
                     {movie.title}
                   </h2>
