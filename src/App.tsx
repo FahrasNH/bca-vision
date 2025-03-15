@@ -8,6 +8,7 @@ import { lazy, Suspense } from "react";
 
 const ExploreMovie = lazy(() => import("./pages/Explore"));
 const HomePage = lazy(() => import("./pages/Home"));
+const MovieDetail = lazy(() => import("./pages/Explore/MovieDetailPage"));
 
 function App() {
   const router = createBrowserRouter(
@@ -15,6 +16,7 @@ function App() {
       <Route>
         <Route path="/" element={<HomePage />} />
         <Route path="/explore" element={<ExploreMovie />} />
+        <Route path="/explore/:id" element={<MovieDetail />} />
       </Route>
     )
   );

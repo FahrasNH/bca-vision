@@ -5,6 +5,7 @@ import { categoryOptions } from "../../config/staticConst";
 import MainLayout from "../../components/layout/MainLayout";
 import Select from "../../components/atoms/Select";
 import Skeleton from "../../components/atoms/Skeleton";
+import { useNavigate } from "react-router-dom";
 
 const MovieSkeleton = () => (
   <div className="relative bg-primary rounded-3xl shadow-md overflow-hidden">
@@ -19,6 +20,7 @@ const MovieSkeleton = () => (
 const ExploreMovie = () => {
   // Hooks
   const { managementMovies, handleGettingListMovies } = useMovies();
+  const navigate = useNavigate()
   const isInitialRender = useRef(true);
   const observerRef = useRef(null);
   const loadingRef = useRef(false);
@@ -172,6 +174,7 @@ const ExploreMovie = () => {
               <div
                 key={movie.id}
                 className="relative bg-secondary rounded-3xl shadow-md overflow-hidden group cursor-pointer"
+                onClick={() => navigate(`/explore/${movie.id}`)}
               >
                 <img
                   src={
