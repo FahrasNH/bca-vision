@@ -16,7 +16,7 @@ export interface Movie {
 }
 
 export interface MovieParams {
-  page: number;
+  page?: number;
   search?: string;
   category?: string;
 }

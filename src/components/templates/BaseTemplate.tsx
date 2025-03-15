@@ -7,9 +7,9 @@ interface BaseTemplateProps {
 
 const BaseTemplate = ({ children }: BaseTemplateProps) => {
   return (
-    <div className="flex">
+    <div className="flex overflow-hidden">
       <Sidebar />
-      <main className="ml-[296px] flex-1">{children}</main>
+      <main className="ml-80 max-w-[calc(100vw-340px)] flex-1">{children}</main>
     </div>
   );
 };

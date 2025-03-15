@@ -1,28 +1,53 @@
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Movie } from "../../../types/movieTypes";
 import MovieCard from "../../atoms/MovieCard";
+import Skeleton from "../../atoms/Skeleton";
 
 interface MovieSectionProps {
   title: string;
-  type: "trending" | "now_playing" | "popular";
+  movies: Movie[];
+  loading: boolean;
 }
 
-const MovieSection = ({ title, type }: MovieSectionProps) => {
-  const [movies, setMovies] = useState<any[]>([]);
+const MovieSkeleton = () => (
+  <div className="relative bg-primary rounded-3xl shadow-md overflow-hidden">
+    <Skeleton className="aspect-[2/3]" />
+    <div className="absolute bottom-0 left-0 right-0 p-4 bg-primary">
+      <Skeleton height={24} className="mb-2" />
+      <Skeleton height={16} width="60%" />
+    </div>
+  </div>
+);
 
-  useEffect(() => {
-    setMovies([
-      { id: 1, title: "Movie 1", poster_path: "/path-1.jpg" },
-      { id: 2, title: "Movie 2", poster_path: "/path-2.jpg" },
-    ]);
-  }, [type]);
+const MovieSection = ({ title, movies, loading }: MovieSectionProps) => {
+  const navigate = useNavigate();
 
   return (
     <section>
       <h2 className="text-2xl font-bold text-white mb-4">{title}</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        {movies.map((movie) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
+      <div className="flex overflow-x-scroll space-x-6">
+        {loading || !movies ? (
+          <>
+            {[...Array(6)].map((_, index) => (
+              <div
+                key={`skeleton-${title}-${index}`}
+                className="flex-none w-[200px]"
+              >
+                <MovieSkeleton />
+              </div>
+            ))}
+          </>
+        ) : (
+          movies.map((movie) => (
+            <button
+              key={`skeleton-${title}-${movie.id}`}
+              className="flex-none w-[200px]"
+              onClick={() => navigate(`/explore/${movie.id}`)}
+            >
+              <MovieCard key={movie.id} movie={movie} />
+            </button>
+          ))
+        )}
       </div>
     </section>
   );
