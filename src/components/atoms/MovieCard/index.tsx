@@ -1,10 +1,4 @@
-interface MovieCardProps {
-  movie: {
-    id: number;
-    title: string;
-    poster_path: string;
-  };
-}
+import { MovieCardProps } from "./interface";
 
 const MovieCard = ({ movie }: MovieCardProps) => {
   return (

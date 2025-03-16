@@ -2,11 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useMovies } from "../../hooks/useMovies";
 import { Bell, MagnifyingGlass } from "@phosphor-icons/react";
 import { categoryOptions } from "../../config/staticConst";
-import MainLayout from "../../components/layout/MainLayout";
-import Select from "../../components/atoms/Select";
-import Skeleton from "../../components/atoms/Skeleton";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { Select, Skeleton } from "../../components/atoms";
+import MainLayout from "../../components/layout/MainLayout";
 
 const MovieSkeleton = () => (
   <div className="relative bg-primary rounded-3xl shadow-md overflow-hidden">

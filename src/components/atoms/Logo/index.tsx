@@ -1,8 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
-interface LogoProps {
-  className?: string;
-}
+import { LogoProps } from "./interface";
 
 const Logo = ({ className = "" }: LogoProps) => {
   const navigate = useNavigate();
@@ -19,7 +16,7 @@ const Logo = ({ className = "" }: LogoProps) => {
       <h1 className="flex justify-center items-center space-x-1">
         <img
           src="/images/v-icon.png"
-          alt="avatar"
+          alt="BCA Vision Logo"
           className="w-7 h-7 rounded-full"
         />
         <div className="text-[#E2E2E2] text-2xl font-bold text-center">

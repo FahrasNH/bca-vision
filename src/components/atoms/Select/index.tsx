@@ -1,14 +1,6 @@
-import { SelectHTMLAttributes, useState } from "react";
+import { useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
-
-interface Option {
-  label: string;
-  value: string;
-}
-
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  options: Option[];
-}
+import { SelectProps } from "./interface";
 
 const Select = ({ options, className = "", value, onChange }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);

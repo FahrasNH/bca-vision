@@ -1,9 +1,5 @@
-import { ReactNode } from "react";
 import Sidebar from "../organisms/Sidebar";
-
-interface BaseTemplateProps {
-  children: ReactNode;
-}
+import { BaseTemplateProps } from "./interface";
 
 const BaseTemplate = ({ children }: BaseTemplateProps) => {
   return (

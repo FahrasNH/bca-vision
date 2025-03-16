@@ -2,7 +2,7 @@ import { useState } from "react";
 import api from "../config/api";
 import { MovieParams, MovieStates } from "../types/movieTypes";
 
-export const useMovies = () => {
+export const useMovieSummary = () => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<MovieStates>({
     movies: [],
     totalPages: 0,

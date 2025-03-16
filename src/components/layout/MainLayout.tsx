@@ -1,9 +1,5 @@
-import { ReactNode } from "react";
 import BaseTemplate from "../templates/BaseTemplate";
-
-interface MainLayoutProps {
-  children: ReactNode;
-}
+import { MainLayoutProps } from "./interface";
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return <BaseTemplate>{children}</BaseTemplate>;

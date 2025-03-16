@@ -1,8 +1,7 @@
 import { useEffect } from "react";
+import { useMovieSummary } from "../../hooks/useMovieSummary";
+import { Banner, MovieSection } from "../../components/molecules";
 import MainLayout from "../../components/layout/MainLayout";
-import Banner from "../../components/molecules/Banner";
-import MovieSection from "../../components/molecules/MovieSection";
-import { useMovies } from "../../hooks/useMovieSummary";
 
 const Home = () => {
   const {
@@ -11,7 +10,7 @@ const Home = () => {
     popularMovies,
     topRatedMovies,
     handleGettingListMovies,
-  } = useMovies();
+  } = useMovieSummary();
 
   useEffect(() => {
     handleGettingListMovies({ category: "upcoming" });
@@ -22,7 +21,7 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <div className="p-4 mt-8">
+      <div className="px-4 pb-4 mt-8">
         <Banner
           movies={upcomingMovies.movies}
           loading={upcomingMovies.loading}
@@ -40,8 +39,8 @@ const Home = () => {
           />
           <MovieSection
             title="Top Rated"
-            movies={topRatedMovies.movies} // Fix this
-            loading={topRatedMovies.loading} // Fix this
+            movies={topRatedMovies.movies}
+            loading={topRatedMovies.loading}
           />
         </div>
       </div>

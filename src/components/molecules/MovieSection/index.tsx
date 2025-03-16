@@ -1,13 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { Movie } from "../../../types/movieTypes";
-import MovieCard from "../../atoms/MovieCard";
-import Skeleton from "../../atoms/Skeleton";
-
-interface MovieSectionProps {
-  title: string;
-  movies: Movie[];
-  loading: boolean;
-}
+import { MovieSectionProps } from "./interface";
+import { MovieCard, Skeleton } from "../../atoms";
 
 const MovieSkeleton = () => (
   <div className="relative bg-primary rounded-3xl shadow-md overflow-hidden">

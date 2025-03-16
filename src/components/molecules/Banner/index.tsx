@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import { Movie } from "../../../types/movieTypes";
-
-interface BannerProps {
-  movies: Movie[];
-  loading: boolean;
-}
+import { BannerProps } from "./interface";
 
 const Banner = ({ movies, loading }: BannerProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);

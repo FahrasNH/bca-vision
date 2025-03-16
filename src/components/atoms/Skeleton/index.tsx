@@ -1,9 +1,4 @@
-interface SkeletonProps {
-  className?: string;
-  height?: string | number;
-  width?: string | number;
-  rounded?: string;
-}
+import { SkeletonProps } from "./interface";
 
 const Skeleton = ({
   className = "",

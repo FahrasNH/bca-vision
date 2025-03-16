@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { CaretLeft } from "@phosphor-icons/react";
 import { useMovieDetail } from "../../hooks/useMovieDetail";
-import Skeleton from "../../components/atoms/Skeleton";
+import { Skeleton } from "../../components/atoms";
 
 const MovieDetailSkeleton = () => (
   <div className="p-8">

@@ -1,9 +1,10 @@
 import { Compass, GearSix, Heart, House, User } from "@phosphor-icons/react";
-import NavLink from "../../molecules/NavLink";
-import Logo from "../../atoms/Logo";
+import { MenuGroup } from "./interface";
+import { Logo } from "../../atoms";
+import { NavLink } from "../../molecules";
 
 const Sidebar = () => {
-  const menuItems = [
+  const menuItems: MenuGroup[] = [
     {
       category: "Main",
       items: [

@@ -1,11 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-
-interface NavLinkProps {
-  to: string;
-  icon: (isActive: boolean) => React.ReactNode;
-  label: string;
-  className: string;
-}
+import { NavLinkProps } from "./interface";
 
 const NavLink = ({ to, icon, label, className }: NavLinkProps) => {
   const location = useLocation();
