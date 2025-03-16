@@ -5,7 +5,9 @@ const BaseTemplate = ({ children }: BaseTemplateProps) => {
   return (
     <div className="flex overflow-hidden">
       <Sidebar />
-      <main className="ml-80 max-w-[calc(100vw-340px)] flex-1">{children}</main>
+      <main className="w-full px-0 md:ml-80 md:max-w-[calc(100vw-340px)] flex-1">
+        {children}
+      </main>
     </div>
   );
 };

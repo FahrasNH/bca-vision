@@ -17,14 +17,16 @@ const MovieSection = ({ title, movies, loading }: MovieSectionProps) => {
 
   return (
     <section>
-      <h2 className="text-2xl font-bold text-white mb-4">{title}</h2>
-      <div className="flex overflow-x-scroll space-x-6">
+      <h2 className="text-xl md:text-2xl font-bold text-white mb-4 px-5 md:px-0">
+        {title}
+      </h2>
+      <div className="flex overflow-x-scroll space-x-4 md:space-x-6 pb-4 pl-5 md:pl-0">
         {loading || !movies ? (
           <>
             {[...Array(6)].map((_, index) => (
               <div
                 key={`skeleton-${title}-${index}`}
-                className="flex-none w-[200px]"
+                className="flex-none w-[140px] md:w-[200px]"
               >
                 <MovieSkeleton />
               </div>
@@ -34,7 +36,7 @@ const MovieSection = ({ title, movies, loading }: MovieSectionProps) => {
           movies.map((movie) => (
             <button
               key={`skeleton-${title}-${movie.id}`}
-              className="flex-none w-[200px]"
+              className="flex-none w-[140px] md:w-[200px]"
               onClick={() => navigate(`/explore/${movie.id}`)}
             >
               <MovieCard key={movie.id} movie={movie} />

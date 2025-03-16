@@ -7,7 +7,7 @@ const Select = ({ options, className = "", value, onChange }: SelectProps) => {
   const selectedOption = options.find((opt) => opt.value === value);
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-between px-6 py-3 bg-secondary text-white rounded-full outline-none focus:ring-2 focus:ring-primary/50 min-w-[150px] ${className}`}

@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useMovies } from "../../hooks/useMovies";
-import { Bell, MagnifyingGlass } from "@phosphor-icons/react";
 import { categoryOptions } from "../../config/staticConst";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { Select, Skeleton } from "../../components/atoms";
+import { Skeleton } from "../../components/atoms";
 import MainLayout from "../../components/layout/MainLayout";
+import { Header } from "../../components/organisms";
 
 const MovieSkeleton = () => (
   <div className="relative bg-primary rounded-3xl shadow-md overflow-hidden">
@@ -110,49 +110,17 @@ const ExploreMovie = () => {
 
   return (
     <MainLayout>
-      <div className="px-4 pb-4 mt-8">
-        <div className="flex justify-between items-center mb-6 space-x-3">
-          <Select
-            options={categoryOptions}
-            value={category}
-            onChange={handleChangeCategory}
-          />
-
-          <div className="relative flex-1">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={handleSearch}
-              className="w-full px-6 py-3 bg-secondary text-white rounded-full outline-none focus:ring-2 focus:ring-primary/50 pr-12"
-            />
-            <MagnifyingGlass
-              className="absolute right-4 top-1/2 -translate-y-1/2"
-              size={20}
-              weight="bold"
-              color="#FFFFFF"
-            />
-          </div>
-
-          <div className="bg-secondary p-[14px] rounded-full cursor-not-allowed">
-            <Bell size={20} weight="bold" color="#FFFFFF" />
-          </div>
-
-          <div className="flex items-center bg-secondary rounded-full p-1 cursor-not-allowed">
-            <img
-              src="/images/kill_av.jpg"
-              alt="avatar"
-              className="w-10 h-10 rounded-full"
-            />
-            <div className="flex flex-col justify-start ml-2 mr-3">
-              <span className="text-white text-sm font-medium">Fahras</span>
-              <span className="text-gray-400 text-xs">Author</span>
-            </div>
-          </div>
-        </div>
+      <div className="pb-4 px-5 md:p-0 mt-6 md:mt-8">
+        <Header
+          category={category}
+          searchQuery={searchQuery}
+          categoryOptions={categoryOptions}
+          onCategoryChange={handleChangeCategory}
+          onSearchChange={handleSearch}
+        />
 
         <h1 className="text-2xl font-bold mb-4 text-white">Movies</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {loading ? (
             <>
               {[...Array(12)].map((_) => (

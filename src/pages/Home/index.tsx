@@ -21,12 +21,12 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <div className="px-4 pb-4 mt-8">
+      <div className="pb-4 mt-8">
         <Banner
           movies={upcomingMovies.movies}
           loading={upcomingMovies.loading}
         />
-        <div className="container mx-auto px-4 py-8 space-y-8">
+        <div className="container mx-auto py-8 space-y-8">
           <MovieSection
             title="Now Playing"
             movies={nowPlayingMovies.movies}

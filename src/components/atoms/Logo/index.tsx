@@ -13,7 +13,7 @@ const Logo = ({ className = "" }: LogoProps) => {
       className={`${className} cursor-pointer mx-auto w-full`}
       onClick={handleClick}
     >
-      <h1 className="flex justify-center items-center space-x-1">
+      <h1 className="flex justify-end md:justify-center items-center space-x-1">
         <img
           src="/images/v-icon.png"
           alt="BCA Vision Logo"

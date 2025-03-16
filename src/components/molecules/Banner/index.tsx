@@ -37,35 +37,39 @@ const Banner = ({ movies, loading }: BannerProps) => {
   if (loading || !currentMovie) return null;
 
   return (
-    <div className="relative h-[70vh] w-full rounded-3xl overflow-hidden">
-      {nextMovie && (
+    <div className="px-5 md:px-0">
+      <div className="relative h-[50vh] md:h-[70vh] w-full rounded-3xl overflow-hidden">
+        {nextMovie && (
+          <img
+            src={`https://image.tmdb.org/t/p/original${nextMovie.backdrop_path}`}
+            alt={nextMovie.title}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isTransitioning ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
         <img
-          src={`https://image.tmdb.org/t/p/original${nextMovie.backdrop_path}`}
-          alt={nextMovie.title}
+          src={`https://image.tmdb.org/t/p/original${currentMovie.backdrop_path}`}
+          alt={currentMovie.title}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-            isTransitioning ? "opacity-100" : "opacity-0"
+            isTransitioning ? "opacity-0" : "opacity-100"
           }`}
         />
-      )}
-      <img
-        src={`https://image.tmdb.org/t/p/original${currentMovie.backdrop_path}`}
-        alt={currentMovie.title}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-          isTransitioning ? "opacity-0" : "opacity-100"
-        }`}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] to-transparent" />
-      <div
-        className={`absolute bottom-0 left-0 p-8 max-w-2xl transition-all duration-500 ${
-          isTransitioning
-            ? "opacity-0 translate-y-4"
-            : "opacity-100 translate-y-0"
-        }`}
-      >
-        <h1 className="text-4xl font-bold text-white mb-4">
-          {currentMovie.title}
-        </h1>
-        <p className="text-gray-200">{currentMovie.overview}</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] to-transparent" />
+        <div
+          className={`absolute bottom-0 left-0 p-4 md:p-8 max-w-2xl transition-all duration-500 ${
+            isTransitioning
+              ? "opacity-0 translate-y-4"
+              : "opacity-100 translate-y-0"
+          }`}
+        >
+          <h1 className="text-2xl md:text-4xl font-bold text-white mb-2 md:mb-4">
+            {currentMovie.title}
+          </h1>
+          <p className="text-sm md:text-base text-gray-200 line-clamp-3 md:line-clamp-none">
+            {currentMovie.overview}
+          </p>
+        </div>
       </div>
     </div>
   );
