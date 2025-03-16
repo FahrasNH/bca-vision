@@ -141,7 +141,7 @@ const ExploreMovie = () => {
 
           <div className="flex items-center bg-secondary rounded-full p-1 cursor-not-allowed">
             <img
-              src="src/assets/images/kill_av.jpg"
+              src="/images/kill_av.jpg"
               alt="avatar"
               className="w-10 h-10 rounded-full"
             />
@@ -173,7 +173,7 @@ const ExploreMovie = () => {
                   src={
                     movie.poster_path
                       ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                      : "src/assets/images/default_poster.jpg"
+                      : "/images/default_poster.jpg"
                   }
                   alt={movie.title}
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

@@ -18,7 +18,7 @@ const Logo = ({ className = "" }: LogoProps) => {
     >
       <h1 className="flex justify-center items-center space-x-1">
         <img
-          src="src/assets/images/v-icon.png"
+          src="/images/v-icon.png"
           alt="avatar"
           className="w-7 h-7 rounded-full"
         />
